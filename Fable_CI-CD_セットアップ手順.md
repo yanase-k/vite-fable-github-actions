@@ -9,7 +9,7 @@ npm create vite@latest （Framework → Vanilla, Variant → javaScript を選�
 ```
 
 ```bash
-cd プロジェクトフォルダ名
+cd プロジェクト名
 npm i
 ```
 `vite.config.js` をルートディレクトリに作成
@@ -22,6 +22,8 @@ export default defineConfig({
   base: "./",
 })
 ```
+
+## GitHub Actions 設定
 
 Web 上の GitHub ページの `Settings → Pages` の `Build and deployment` の `Source` を `Github Actions` にする
 
@@ -80,4 +82,13 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+```
+
+## F# プロジェクト作成
+
+F#プロジェクト用のフォルダを作成し、以下コマンドを実行
+
+```bash
+cd F#プロジェクト用フォルダ名
+dotnet new console -lang F#
 ```
