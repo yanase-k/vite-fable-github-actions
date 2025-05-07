@@ -144,3 +144,8 @@ Fable のビルド出力用ディレクトリ（src/fable-output）を作成後�
 npm run fable
 npm run build
 ```
+
+`src/main.js` に以下の行を追加
+```js
+import './fable-output/Program.js'
+```
