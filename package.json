@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "npm run fable && vite",
+    "build": "npm run fable && vite build",
+    "preview": "vite preview",
+    "fable": "dotnet fable src-fsharp/src-fsharp.fsproj --outDir src/fable-output"
   },
   "devDependencies": {
     "vite": "^6.3.5"

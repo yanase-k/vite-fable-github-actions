@@ -92,3 +92,55 @@ F#プロジェクト用のフォルダを作成し、以下コマンドを実行
 cd F#プロジェクト用フォルダ名
 dotnet new console -lang F#
 ```
+
+## Fable 導入
+
+F# プロジェクトの `.fsproj` ファイルに Fable 関連パッケージを追記
+
+```fsproj
+  <ItemGroup>
+    <PackageReference Include="Fable.Core" Version="4.5.0" />
+    <PackageReference Include="Fable.Browser.Dom" Version="2.19.0" />
+  </ItemGroup>
+```
+
+ルートディレクトリにある `package.json` の "scripts" 部分を以下のように修正
+
+```json
+"scripts": {
+  "dev": "npm run fable && vite",
+  "build": "npm run fable && vite build",
+  "preview": "vite preview",
+  "fable": "dotnet fable src-fsharp/src-fsharp.fsproj --outDir src/fable-output"
+},
+```
+
+ルートディレクトリに `.config/dotnet-tools.json` を作成
+
+```json
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "fable": {
+      "version": "4.25.0",
+      "commands": [
+        "fable"
+      ]
+    }
+  }
+} 
+```
+
+下記コマンド実行
+
+```bash
+dotnet tool restore
+```
+
+Fable のビルド出力用ディレクトリ（src/fable-output）を作成後、下記コマンド実行
+
+```bash
+npm run fable
+npm run build
+```
