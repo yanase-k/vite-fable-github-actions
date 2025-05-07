@@ -1,0 +1,83 @@
+# Fable CI/CD セットアップ手順
+
+## Viteセットアップ
+
+以下のコマンドを実行 
+
+```bash
+npm create vite@latest （Framework → Vanilla, Variant → javaScript を選択）
+```
+
+```bash
+cd プロジェクトフォルダ名
+npm i
+```
+`vite.config.js` をルートディレクトリに作成
+
+```js
+import { defineConfig } from 'vite'
+
+// https://vite.dev/config/
+export default defineConfig({
+  base: "./",
+})
+```
+
+Web 上の GitHub ページの `Settings → Pages` の `Build and deployment` の `Source` を `Github Actions` にする
+
+`.github/workflows/deploy.yml` を以下のように作成する
+
+```yml
+name: build and deploy
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      - name: Restore .NET tools
+        run: dotnet tool restore
+      - name: build
+        run: npm i && npm run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # ビルド生成物はdistフォルダ
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
