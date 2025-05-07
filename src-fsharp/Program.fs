@@ -1,2 +1,7 @@
 ﻿// For more information see https://aka.ms/fsharp-console-apps
-printfn "Hello from F#"
+module Program
+
+open Browser.Dom
+
+let element = document.getElementById "app"
+element.innerText <- "Vite + Fable + GitHub Actions テスト"
